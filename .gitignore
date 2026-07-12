@@ -1,0 +1,34 @@
+# Maven
+target/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Reports
+reports/
+extent-report/
+allure-results/
+allure-report/
+
+# Screenshots
+screenshots/
+
+# Videos
+videos/
+
+# OS
+Thumbs.db
+.DS_Store
