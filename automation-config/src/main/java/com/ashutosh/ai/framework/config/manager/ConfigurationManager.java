@@ -1,5 +1,6 @@
 package com.ashutosh.ai.framework.config.manager;
-
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 /**
  * ConfigurationManager
@@ -14,12 +15,11 @@ import java.util.Properties;
  * Author: Ashutosh Kumar Sahu
  */
 public final class ConfigurationManager {
-	
 	private static ConfigurationManager instance;
 	private final Properties properties;
 	private ConfigurationManager() {
 		properties = new Properties();
-		 loadProperties();
+		loadProperties();
 	}
 	/**
 	 * Returns the singleton instance of ConfigurationManager.
@@ -29,13 +29,16 @@ public final class ConfigurationManager {
 	 * @return ConfigurationManager singleton instance
 	 */
 	public static ConfigurationManager getInstance() {
-		 if (instance == null) {
-		        instance = new ConfigurationManager();
-		    }
-		  return instance;
+		if (instance == null) {
+			instance = new ConfigurationManager();
+		}
+		return instance;
 	}
-	 private void loadProperties(){
-
+	private void loadProperties() {
+	    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+	    } catch (IOException e) {
+	        e.printStackTrace();
 	    }
+	}	
 
 }
