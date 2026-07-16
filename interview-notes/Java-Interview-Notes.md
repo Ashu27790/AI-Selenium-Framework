@@ -1,40 +1,19 @@
 # ☕ Java Interview Notes
-# AI Driven Selenium Automation Framework
-Author: Ashutosh Kumar Sahu
-Mentor: ChatGPT (Principal Automation Architect)
+## AI Driven Selenium Automation Framework
+
+Author : Ashutosh Kumar Sahu
 
 ---
 
-# Version History
+# Progress
 
-| Version | Date | Description |
-|----------|------|-------------|
-| 1.0 | 15-Jul-2026 | Initial Notes |
-
----
-
-# Table of Contents
-
-1. Java Basics
-2. Object Oriented Programming
-3. SOLID Principles
-4. Design Patterns
-5. Exception Handling
-6. Collections
-7. Java 8 Features
-8. Multithreading
-9. File Handling
-10. Maven
-11. Git
-12. Selenium
-13. TestNG
-14. Cucumber
-15. API Testing
-16. SQL
-17. Framework Architecture
-18. AI Integration
-19. Interview Questions
-20. Real Time Scenarios
+| Sprint | Topic | Status |
+|---------|-------|--------|
+| Sprint 1 | Maven Multi Module | ✅ |
+| Sprint 2 | Git & GitHub | ✅ |
+| Sprint 3 | Package Structure | ✅ |
+| Sprint 4 | Configuration Manager Skeleton | ✅ |
+| Sprint 5 | Singleton Pattern | ✅ |
 
 ---
 
@@ -42,693 +21,519 @@ Mentor: ChatGPT (Principal Automation Architect)
 
 ## What is Java?
 
-Java is an Object-Oriented Programming language developed by Sun Microsystems.
+Java is an Object-Oriented Programming Language developed by Sun Microsystems.
 
-Features
+### Features
 
 - Platform Independent
 - Object Oriented
-- Robust
 - Secure
+- Robust
 - Multithreaded
 - Portable
-- High Performance (JIT)
 - Automatic Garbage Collection
 
 ---
 
 ## JVM
 
-Java Virtual Machine executes bytecode.
+JVM (Java Virtual Machine) executes Java Bytecode.
 
-Responsibilities
+### Responsibilities
 
+- Execute bytecode
 - Memory Management
 - Garbage Collection
 - Class Loading
-- Bytecode Execution
 
-Interview Question
+### Interview Question
 
-Q: Why Java is Platform Independent?
+**Q:** Why is Java Platform Independent?
 
-Answer
+**Answer:**
 
-Because Java code is compiled into bytecode which is executed by JVM available for different Operating Systems.
-
----
-
-## JDK
-
-Java Development Kit
-
-Contains
-
-- JVM
-- Compiler
-- Debugger
-- Development Tools
+Java source code is compiled into Bytecode (.class), and JVM converts Bytecode into machine code depending on the operating system.
 
 ---
 
-## JRE
+## JDK vs JRE vs JVM
 
-Java Runtime Environment
-
-Contains
-
-- JVM
-- Runtime Libraries
-
-Difference
-
-JDK = Development
-
-JRE = Execution
+| JDK | JRE | JVM |
+|------|------|------|
+| Development Kit | Runtime Environment | Executes Bytecode |
+| Contains Compiler | Contains JVM | Runs Java Program |
 
 ---
 
-# 2. Object Oriented Programming
+# 2. OOPS Concepts
 
-## Four Pillars
+## Class
 
-### Encapsulation
+### Definition
 
-Definition
+A class is a blueprint for creating objects.
 
-Wrapping data and methods into one class.
+### Example
 
-Example
+```java
+public class ConfigurationManager {
 
-ConfigurationManager class.
+}
+```
 
-Advantages
+### Framework Example
 
-- Security
-- Maintainability
-- Reusability
-
-Interview Question
-
-Q. What is Encapsulation?
-
----
-
-### Inheritance
-
-Definition
-
-Acquiring properties of parent class.
-
-Example
-
-BasePage
+```
+ConfigurationManager
 
 ↓
 
-LoginPage
+Reads Configuration
+```
 
 ---
 
-Advantages
+## Object
 
-- Reusability
+### Definition
 
-Disadvantages
+Object is an instance of a class.
 
-- Tight Coupling
+### Example
 
-Prefer Composition over Inheritance.
-
----
-
-### Polymorphism
-
-Compile Time
-
-Method Overloading
-
-Run Time
-
-Method Overriding
-
-Interview Question
-
-Difference between Overloading and Overriding.
+```java
+ConfigurationManager config =
+ConfigurationManager.getInstance();
+```
 
 ---
 
-### Abstraction
+## Difference
 
-Showing only required functionality.
-
-Achieved using
-
-- Interface
-- Abstract Class
+| Class | Object |
+|--------|---------|
+| Blueprint | Instance |
+| No Memory | Occupies Memory |
 
 ---
 
-# 3. SOLID Principles
+## Constructor
 
-## S
+### Definition
 
-Single Responsibility Principle
+Constructor initializes an object.
 
-One class should have one responsibility.
+### Types
 
-Framework Example
+- Default Constructor
+- Parameterized Constructor
+- Private Constructor
 
+Example
+
+```java
+private ConfigurationManager(){
+
+}
+```
+
+### Why Private?
+
+To prevent
+
+```java
+new ConfigurationManager();
+```
+
+This is required for Singleton.
+
+---
+
+# 3. Access Modifiers
+
+| Modifier | Access |
+|-----------|---------|
+| public | Everywhere |
+| protected | Package + Child |
+| default | Package Only |
+| private | Same Class |
+
+Example
+
+```java
+private static ConfigurationManager instance;
+```
+
+Only ConfigurationManager can access it.
+
+---
+
+# 4. static Keyword
+
+## Definition
+
+Static belongs to the class, not to an object.
+
+### Example
+
+```java
+private static ConfigurationManager instance;
+```
+
+### Why Static?
+
+Because we need only ONE object.
+
+Without static
+
+```
+Object1 → instance
+
+Object2 → instance
+
+Object3 → instance
+```
+
+With static
+
+```
 ConfigurationManager
 
-Only manages configuration.
+↓
+
+instance
+
+↓
+
+One Object
+```
+
+### Interview Question
+
+Why is Singleton object static?
+
+**Answer**
+
+Because only one copy should exist for the entire application.
 
 ---
 
-## O
+# 5. final Keyword
 
-Open Closed Principle
+## Definition
 
-Open for Extension
+final prevents modification.
 
-Closed for Modification
+### Final Variable
 
-Framework Example
+```java
+final int age = 30;
+```
 
-New Browser can be added without modifying existing code.
-
----
-
-## L
-
-Liskov Substitution Principle
-
-Child class should replace Parent class without breaking behavior.
+Cannot change.
 
 ---
 
-## I
+### Final Method
 
-Interface Segregation Principle
-
-Don't force classes to implement unnecessary methods.
+Cannot Override.
 
 ---
 
-## D
+### Final Class
 
-Dependency Inversion Principle
+```java
+public final class ConfigurationManager {
 
-Depend on abstraction.
+}
+```
 
-Not implementation.
+Cannot inherit.
+
+### Why Final?
+
+Nobody should extend ConfigurationManager because it is a Singleton.
 
 ---
 
-# 4. Design Patterns
+# 6. Singleton Design Pattern
 
-## Singleton
+## Definition
 
-Definition
+Singleton ensures only one object exists in the application.
 
-Only one object exists.
+### Current Implementation
 
-Framework Usage
+```java
+private static ConfigurationManager instance;
 
-ConfigurationManager
+private ConfigurationManager() {
 
-DriverManager
+}
 
-ExtentManager
+public static ConfigurationManager getInstance() {
 
-Logger
+    if(instance == null){
+        instance = new ConfigurationManager();
+    }
 
-Advantages
+    return instance;
+}
+```
+
+---
+
+## Why Singleton?
+
+Suppose
+
+1000 Tests
+
+Without Singleton
+
+```
+1000 Objects
+```
+
+With Singleton
+
+```
+1000 Tests
+
+↓
+
+1 ConfigurationManager
+
+↓
+
+Shared Configuration
+```
+
+### Advantages
 
 - Less Memory
-- Faster
-- Centralized
+- Better Performance
+- Centralized Configuration
 
-Disadvantages
+### Disadvantages
 
-Thread Safety if not implemented correctly.
+Current implementation is NOT Thread Safe.
 
----
-
-## Factory Pattern
-
-Framework Usage
-
-DriverFactory
-
-BrowserFactory
+Later we'll improve it.
 
 ---
 
-## Builder Pattern
+### Framework Usage
 
-Framework Usage
-
-API Request Builder
-
-Test Data Builder
-
----
-
-## Strategy Pattern
-
-Framework Usage
-
-Chrome
-
-Firefox
-
-Edge
-
-Driver Selection
+- ConfigurationManager
+- DriverManager
+- Logger
+- ReportManager
 
 ---
 
-## Page Object Model
+### Interview Questions
+
+Q. Why Singleton?
+
+A. To create only one object and provide a global access point.
+
+---
+
+Q. Why private constructor?
+
+A. To stop object creation using new keyword.
+
+---
+
+Q. Why static object?
+
+A. Because the object belongs to the class.
+
+---
+
+Q. What is Lazy Initialization?
+
+A. Object is created only when required.
+
+---
+
+# 7. Properties Class
+
+Package
+
+```java
+java.util.Properties
+```
 
 Purpose
 
-Maintainability
+Read configuration files.
 
-Reusability
+Example
 
-Low Coupling
+config.properties
 
----
+```properties
+browser=chrome
+```
 
-# 5. Exception Handling
+Java
 
-Keywords
+```java
+properties.getProperty("browser");
+```
 
-try
+Output
 
-catch
-
-finally
-
-throw
-
-throws
-
-Interview Questions
-
-Difference between throw and throws.
-
-Difference between Checked and Unchecked Exception.
+```
+chrome
+```
 
 ---
 
-# 6. Collections
+# 8. Framework Concepts Learned
 
-List
+## Parent POM
 
-ArrayList
+Central place for
 
-LinkedList
-
-Vector
-
-Stack
-
-Queue
-
-PriorityQueue
-
-Map
-
-HashMap
-
-LinkedHashMap
-
-TreeMap
-
-Set
-
-HashSet
-
-LinkedHashSet
-
-TreeSet
-
-Interview Questions
-
-Difference between HashMap and ConcurrentHashMap.
-
-Difference between ArrayList and LinkedList.
-
-Difference between HashSet and TreeSet.
+- Dependency Versions
+- Plugin Versions
+- Java Version
 
 ---
 
-# 7. Java 8
+## Child POM
 
-Lambda Expression
+Contains module-specific dependencies.
 
-Functional Interface
+Example
 
-Stream API
+```
+automation-common
 
-Optional
+automation-config
 
-Method Reference
-
-Default Method
-
-Interview Questions
-
-What is Stream API?
-
-Difference between Collection and Stream.
+automation-driver
+```
 
 ---
 
-# 8. Multithreading
+## Multi Module Project
 
-Thread
+```
+AI Selenium Framework
 
-Runnable
+│
 
-Callable
+├── automation-common
 
-Executor Framework
+├── automation-config
 
-Synchronization
+├── automation-driver
 
-volatile
+├── automation-core
 
-Atomic Classes
+├── automation-web
+```
 
-Interview Questions
+Advantages
 
-Difference between synchronized and Lock.
-
-Difference between wait() and sleep().
-
----
-
-# 9. File Handling
-
-File
-
-Path
-
-Files
-
-Properties
-
-BufferedReader
-
-InputStream
-
-OutputStream
-
-try-with-resources
+- Reusable
+- Easy Maintenance
+- Independent Modules
 
 ---
 
-# 10. Maven
+# 9. Git Commands
 
-Lifecycle
-
-validate
-
-compile
-
-test
-
-package
-
-verify
-
-install
-
-deploy
-
-Parent POM
-
-Child POM
-
-Dependency Management
-
-Plugin Management
-
-Multi Module Project
-
----
-
-# 11. Git
-
+```bash
 git init
-
-git clone
-
 git status
-
-git add
-
-git commit
-
+git add .
+git commit -m "message"
 git push
-
 git pull
-
 git branch
-
-git checkout
-
-git merge
-
-git rebase
-
-Cherry Pick
-
-Stash
-
-Tags
+```
 
 ---
 
-# 12. Selenium
+# 10. Best Practices Learned
 
-WebDriver
+✅ Never hardcode values.
 
-WebElement
+❌ Wrong
 
-Locators
+```java
+driver.get("https://google.com");
+```
 
-Waits
+✅ Correct
 
-Frames
-
-Alerts
-
-Actions
-
-JavaScriptExecutor
-
-Relative Locators
-
-Shadow DOM
-
-Selenium Grid
+```java
+driver.get(config.getProperty("base.url"));
+```
 
 ---
 
-# 13. TestNG
-
-Annotations
-
-Assertions
-
-Listeners
-
-Retry Analyzer
-
-DataProvider
-
-Parameters
-
-Groups
-
-Parallel Execution
+✅ Never create multiple ConfigurationManager objects.
 
 ---
 
-# 14. Cucumber
-
-Feature
-
-Scenario
-
-Background
-
-Scenario Outline
-
-Examples
-
-Hooks
-
-Tags
-
-Step Definition
-
-Runner
+✅ Keep one responsibility per class.
 
 ---
 
-# 15. API Testing
-
-REST
-
-SOAP
-
-GET
-
-POST
-
-PUT
-
-PATCH
-
-DELETE
-
-Headers
-
-Body
-
-Authentication
-
-Response Validation
+✅ Always use meaningful package names.
 
 ---
 
-# 16. SQL
-
-SELECT
-
-INSERT
-
-UPDATE
-
-DELETE
-
-JOIN
-
-GROUP BY
-
-ORDER BY
-
-HAVING
-
-Sub Query
-
-Window Functions
+✅ Build should always pass before commit.
 
 ---
 
-# 17. Framework Architecture
+# 11. Classes Built Till Now
 
-Hybrid Framework
+```
+FrameworkConstants
 
-POM
+BrowserType
 
-Factory Pattern
+FrameworkException
 
-Singleton Pattern
-
-Builder Pattern
-
-Dependency Injection
-
-Configuration Driven
-
-AI Driven
+ConfigurationManager
+```
 
 ---
 
-# 18. AI Integration
+# 12. Interview Questions Covered
 
-OpenAI
-
-LangChain4j
-
-Prompt Engineering
-
-RAG
-
-Embeddings
-
-Vector Database
-
-Self Healing Locator
-
-AI Root Cause Analysis
-
-AI Screenshot Analysis
-
-AI Test Generation
+- What is Java?
+- JVM vs JDK vs JRE
+- What is a Class?
+- What is an Object?
+- Difference between Class and Object
+- What is Constructor?
+- Why Private Constructor?
+- What is static?
+- What is final?
+- Why final class?
+- What is Singleton?
+- Why Singleton?
+- What is Lazy Initialization?
+- What is Properties class?
+- What is Parent POM?
+- What is Child POM?
+- Why Multi Module Framework?
 
 ---
 
-# 19. Interview Questions
+# Remember
 
-This section will keep growing during the project.
+> **Good Automation Engineers write Selenium scripts.**
 
-Every class we build
+> **Automation Architects design frameworks that other engineers use.**
 
-↓
-
-Interview Questions
-
-↓
-
-Answers
-
-↓
-
-Best Practices
-
----
-
-# 20. Real Time Scenarios
-
-Real Interview Scenarios
-
-Real Banking Examples
-
-Production Issues
-
-Debugging
-
-Optimization
-
-Memory Leak
-
-Performance
-
-Thread Safety
-
-Framework Migration
-
-AI Integration
-
-CI/CD
-
-Docker
-
-Azure DevOps
-
-GitHub Actions
-
----
-
-# Notes
-
-Every sprint will update this document.
-
-This document will become the complete interview handbook by the end of the project.
+Our goal is to become an **Automation Architect**, not just an Automation Engineer.

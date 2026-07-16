@@ -19,6 +19,7 @@ public final class ConfigurationManager {
 	private final Properties properties;
 	private ConfigurationManager() {
 		properties = new Properties();
+		 loadProperties();
 	}
 	/**
 	 * Returns the singleton instance of ConfigurationManager.
@@ -33,5 +34,8 @@ public final class ConfigurationManager {
 		    }
 		  return instance;
 	}
+	 private void loadProperties(){
+
+	    }
 
 }
