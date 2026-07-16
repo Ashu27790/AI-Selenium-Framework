@@ -36,6 +36,10 @@ public final class ConfigurationManager {
 	}
 	private void loadProperties() {
 	    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+	    	if (inputStream == null) {
+	            throw new RuntimeException("Unable to locate config.properties");
+	        }
+	    	properties.load(inputStream);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
