@@ -28,6 +28,17 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
 
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!-- Selenium -->
+		<selenium.version>4.35.0</selenium.version>
+
+		<!-- WebDriverManager -->
+		<webdrivermanager.version>6.2.0</webdrivermanager.version>
+
+		<!-- TestNG -->
+		<testng.version>7.11.0</testng.version>
+
+		<!-- Log4j -->
+		<log4j.version>2.25.1</log4j.version>
 
     </properties>
 
@@ -36,6 +47,46 @@
         <module>automation-common</module>
     	
         <module>automation-config</module>
+        <module>automation-driver</module>
+        <module>automation-test</module>
+        <module>automation-page</module>
     </modules>
+    <dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            
+        </dependency>
+        <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>${log4j.version}</version>
+</dependency>
+
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>${log4j.version}</version>
+</dependency>
+
+    </dependencies>
+
+</dependencyManagement>
 
 </project>
