@@ -1,6 +1,7 @@
 package com.ashutosh.ai.framework.page.base;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,58 +11,66 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.ashutosh.ai.framework.config.manager.ConfigurationManager;
 import com.ashutosh.ai.framework.driver.manager.DriverManager;
+import com.ashutosh.ai.framework.page.actions.ElementActions;
+import com.ashutosh.ai.framework.page.waits.WaitUtils;
 
 /**
- * BasePage is the parent class for all Page Objects.
+ * BasePage serves as the parent class for all Page Objects.
  *
  * <p>
- * It initializes the common Selenium components and provides reusable browser
- * operations for all page classes.
- * </p>
- *
  * Responsibilities:
  * <ul>
- * <li>Initialize WebDriver</li>
- * <li>Initialize WebDriverWait</li>
- * <li>Initialize JavascriptExecutor</li>
- * <li>Provide common browser navigation methods</li>
+ * <li>Initialize common Selenium components.</li>
+ * <li>Provide browser navigation methods.</li>
+ * <li>Provide reusable action classes.</li>
  * </ul>
+ * </p>
  *
  * @author Ashutosh Kumar Sahu
  * @version 1.0
  */
 public abstract class BasePage {
 
-    private static final Logger LOGGER = LogManager.getLogger(BasePage.class);
+    private static final Logger LOGGER =
+            LogManager.getLogger(BasePage.class);
+
+    private static final ConfigurationManager CONFIG =
+            ConfigurationManager.getInstance();
 
     protected final WebDriver driver;
     protected final WebDriverWait wait;
     protected final JavascriptExecutor jsExecutor;
 
-    protected final ConfigurationManager configurationManager =
-            ConfigurationManager.getInstance();
+    protected final WaitUtils waitUtils;
+    protected final ElementActions elementActions;
 
     /**
-     * Initializes common Selenium objects for every Page Object.
+     * Initializes common Selenium objects required by all Page Objects.
      */
     protected BasePage() {
 
-        this.driver = DriverManager.getDriver();
+        this.driver = Objects.requireNonNull(
+                DriverManager.getDriver(),
+                "WebDriver is not initialized. "
+                        + "Ensure BaseTest initializes the driver before creating Page Objects.");
 
-        int explicitWait =
-                configurationManager.getIntProperty("explicit.wait");
+        int explicitWait = CONFIG.getIntProperty("explicit.wait");
 
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWait));
 
         this.jsExecutor = (JavascriptExecutor) driver;
 
-        LOGGER.info("Initialized Page : {}", getClass().getSimpleName());
+        this.waitUtils = new WaitUtils();
+        this.elementActions = new ElementActions();
+
+        LOGGER.info("Page Object initialized : {}",
+                getClass().getSimpleName());
     }
 
     /**
-     * Returns the current page title.
+     * Returns current page title.
      *
-     * @return Page title
+     * @return page title
      */
     public String getTitle() {
 
@@ -71,59 +80,110 @@ public abstract class BasePage {
     }
 
     /**
-     * Returns the current page URL.
+     * Returns current page URL.
      *
-     * @return Current URL
+     * @return current URL
      */
     public String getCurrentUrl() {
 
-        LOGGER.debug("Getting current URL.");
+        LOGGER.debug("Getting current page URL.");
 
         return driver.getCurrentUrl();
     }
 
     /**
-     * Navigates to the specified URL.
+     * Navigates to specified URL.
      *
-     * @param url URL to navigate to
+     * @param url application URL
      */
     public void navigateTo(String url) {
 
-        LOGGER.info("Navigating to URL : {}", url);
+        LOGGER.info("Navigating to : {}", url);
 
         driver.navigate().to(url);
+
+        waitUtils.waitForPageLoad();
     }
 
     /**
-     * Refreshes the current page.
+     * Refreshes current page.
      */
     public void refreshPage() {
 
         LOGGER.info("Refreshing current page.");
 
         driver.navigate().refresh();
+
+        waitUtils.waitForPageLoad();
     }
 
     /**
-     * Navigates back to the previous page.
+     * Navigates back.
      */
     public void back() {
 
         LOGGER.info("Navigating back.");
 
         driver.navigate().back();
+
+        waitUtils.waitForPageLoad();
     }
 
     /**
-     * Navigates forward to the next page.
+     * Navigates forward.
      */
     public void forward() {
 
         LOGGER.info("Navigating forward.");
 
         driver.navigate().forward();
+
+        waitUtils.waitForPageLoad();
     }
 
-  
+    /**
+     * Returns WebDriver instance.
+     *
+     * @return WebDriver
+     */
+    protected WebDriver getDriver() {
+        return driver;
+    }
+
+    /**
+     * Returns WebDriverWait instance.
+     *
+     * @return WebDriverWait
+     */
+    protected WebDriverWait getWait() {
+        return wait;
+    }
+
+    /**
+     * Returns JavascriptExecutor instance.
+     *
+     * @return JavascriptExecutor
+     */
+    protected JavascriptExecutor getJsExecutor() {
+        return jsExecutor;
+    }
+
+    /**
+     * Returns WaitUtils instance.
+     *
+     * @return WaitUtils
+     */
+    protected WaitUtils getWaitUtils() {
+        return waitUtils;
+    }
+
+    /**
+     * Returns ElementActions instance.
+     *
+     * @return ElementActions
+     */
+    protected ElementActions getElementActions() {
+        return elementActions;
+    }
 
 }
