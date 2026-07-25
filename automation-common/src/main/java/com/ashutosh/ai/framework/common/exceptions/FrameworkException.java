@@ -10,35 +10,36 @@ package com.ashutosh.ai.framework.common.exceptions;
  */
 public abstract class FrameworkException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
-    public FrameworkException() {
-        super();
-    }
+	private static final long serialVersionUID = 1L;
+
     /**
-     * Constructs a FrameworkException with the specified message.
+     * Constructs a FrameworkException with the specified detail message.
      *
-     * @param message Exception message
+     * @param message the detail message
      */
-    public FrameworkException(String message) {
+    protected FrameworkException(final String message) {
         super(message);
     }
 
     /**
      * Constructs a FrameworkException with the specified cause.
      *
-     * @param cause Root cause
+     * @param cause the root cause
      */
-    public FrameworkException(Throwable cause) {
+    protected FrameworkException(final Throwable cause) {
         super(cause);
     }
 
     /**
-     * Constructs a FrameworkException with the specified message and cause.
+     * Constructs a FrameworkException with the specified detail message and cause.
      *
-     * @param message Exception message
-     * @param cause Root cause
+     * @param message the detail message
+     * @param cause the root cause
      */
-    public FrameworkException(String message, Throwable cause) {
+    protected FrameworkException(
+            final String message,
+            final Throwable cause) {
+
         super(message, cause);
     }
 }

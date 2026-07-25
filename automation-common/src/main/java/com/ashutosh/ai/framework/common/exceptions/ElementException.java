@@ -19,9 +19,7 @@ package com.ashutosh.ai.framework.common.exceptions;
 public final class ElementException extends FrameworkException {
 
     private static final long serialVersionUID = 1L;
-    public ElementException() {
-        super();
-    }
+    
     /**
      * Constructs an ElementException with the specified message.
      *

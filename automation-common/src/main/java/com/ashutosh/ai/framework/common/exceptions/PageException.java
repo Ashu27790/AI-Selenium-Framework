@@ -15,9 +15,7 @@ package com.ashutosh.ai.framework.common.exceptions;
 public final class PageException extends FrameworkException {
 
     private static final long serialVersionUID = 1L;
-    public PageException() {
-        super();
-    }
+   
     /**
      * Constructs a PageException with the specified message.
      *

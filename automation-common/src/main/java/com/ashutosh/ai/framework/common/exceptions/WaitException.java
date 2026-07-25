@@ -15,9 +15,7 @@ package com.ashutosh.ai.framework.common.exceptions;
 public final class WaitException extends FrameworkException {
 
     private static final long serialVersionUID = 1L;
-    public WaitException() {
-        super();
-    }
+    
     /**
      * Constructs a WaitException with the specified message.
      *

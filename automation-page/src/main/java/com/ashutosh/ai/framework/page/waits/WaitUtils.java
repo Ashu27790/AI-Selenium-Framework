@@ -2,9 +2,10 @@ package com.ashutosh.ai.framework.page.waits;
 
 import java.time.Duration;
 import java.util.List;
-
+import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -12,9 +13,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.ashutosh.ai.framework.common.exceptions.WaitException;
 import com.ashutosh.ai.framework.config.manager.ConfigurationManager;
 import com.ashutosh.ai.framework.driver.manager.DriverManager;
-
+import java.util.concurrent.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Utility class responsible for explicit waits used throughout the Page Object
  * Model.
@@ -164,4 +169,67 @@ public class WaitUtils {
         LOGGER.debug("Waiting for {} elements for locator: {}", count, locator);
         return wait.until(ExpectedConditions.numberOfElementsToBe(locator, count));
     }
+
+    /**
+     * Waits until a browser alert is present.
+     *
+     * @return the available {@link Alert} instance
+     * @throws WaitException if the alert is not present within the configured timeout
+     */
+    public Alert waitForAlert() {
+        try {
+            LOGGER.debug("Waiting for browser alert.");
+            final Alert alert = wait.until( ExpectedConditions.alertIsPresent());
+            LOGGER.info("Browser alert is present.");
+            return alert;
+        } catch (Exception exception) {
+            LOGGER.error( "Failed to wait for browser alert.",exception);
+            throw new WaitException("Failed to wait for browser alert.",exception);
+        }
+    }
+
+    /**
+     * Waits until the specified element becomes visible.
+     *
+     * @param locator element locator
+     * @return visible WebElement
+     * @throws WaitException if the element does not become visible within the configured timeout
+     */
+    public WebElement waitForElementVisible(final By locator) {
+
+        Objects.requireNonNull(locator,"Locator cannot be null.");
+        try {
+            LOGGER.debug("Waiting for element visibility: {}",locator);
+            final WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            LOGGER.info("Element is visible: {}",locator);
+            return element;
+        } catch (Exception exception) {
+            LOGGER.error("Failed to wait for element visibility: {}",locator, exception);
+            throw new WaitException("Failed to wait for element visibility: " + locator,exception);
+        }
+    }
+
+	public void waitForWindowCount(final int expectedWindowCount) {
+		if (expectedWindowCount <= 0) {
+	        throw new IllegalArgumentException("Expected window count must be greater than zero.");
+	    }
+	    try {
+	        LOGGER.debug("Waiting for {} browser window(s).",expectedWindowCount);
+	        wait.until(ExpectedConditions.numberOfWindowsToBe(expectedWindowCount));
+	        LOGGER.info("{} browser window(s) are available.",expectedWindowCount);
+	    } catch (TimeoutException exception) {
+	        LOGGER.error("Timed out waiting for {} browser window(s).",expectedWindowCount, exception);
+	        throw new WaitException(String.format("Timed out waiting for %d browser window(s).",expectedWindowCount),exception);
+	    }
+		
+	}
+
+	public void waitForNewWindow() {
+		final int expectedWindowCount =driver.getWindowHandles().size() + 1;
+	    LOGGER.debug("Waiting for a new browser window. Expected window count: {}",expectedWindowCount);
+	    waitForWindowCount(expectedWindowCount);
+		
+	}
+
+
 }

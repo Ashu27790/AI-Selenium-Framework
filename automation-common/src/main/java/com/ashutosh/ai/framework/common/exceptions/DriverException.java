@@ -13,9 +13,7 @@ package com.ashutosh.ai.framework.common.exceptions;
 public final class DriverException extends FrameworkException {
 
     private static final long serialVersionUID = 1L;
-    public DriverException() {
-        super();
-    }
+    
     /**
      * Constructs a DriverException with the specified message.
      * @param message Exception message

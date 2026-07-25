@@ -15,9 +15,7 @@ package com.ashutosh.ai.framework.common.exceptions;
 public final class ValidationException extends FrameworkException {
 
     private static final long serialVersionUID = 1L;
-    public ValidationException() {
-        super();
-    }
+    
     /**
      * Constructs a ValidationException with the specified message.
      *

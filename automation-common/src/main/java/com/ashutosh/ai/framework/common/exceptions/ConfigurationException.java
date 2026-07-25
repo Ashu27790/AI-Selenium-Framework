@@ -16,9 +16,7 @@ package com.ashutosh.ai.framework.common.exceptions;
 public final class ConfigurationException extends FrameworkException {
 
     private static final long serialVersionUID = 1L;
-    public ConfigurationException() {
-        super();
-    }
+    
     /**
      * Constructs a ConfigurationException with the specified message.
      *

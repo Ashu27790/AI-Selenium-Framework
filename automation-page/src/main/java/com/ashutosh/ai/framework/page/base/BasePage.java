@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.ashutosh.ai.framework.config.manager.ConfigurationManager;
 import com.ashutosh.ai.framework.driver.manager.DriverManager;
 import com.ashutosh.ai.framework.page.actions.ElementActions;
+import com.ashutosh.ai.framework.page.actions.*;
 import com.ashutosh.ai.framework.page.waits.WaitUtils;
 
 /**
@@ -40,10 +41,14 @@ public abstract class BasePage {
     protected final WebDriver driver;
     protected final WebDriverWait wait;
     protected final JavascriptExecutor jsExecutor;
-
     protected final WaitUtils waitUtils;
     protected final ElementActions elementActions;
-
+    protected final MouseActions mouseActions;
+    protected final KeyboardActions keyboardActions;
+    protected final AlertActions alertActions;
+    protected final FrameActions frameActions;
+    protected final WindowActions windowActions;
+    protected final DropdownActions dropdownActions;
     /**
      * Initializes common Selenium objects required by all Page Objects.
      */
@@ -61,8 +66,13 @@ public abstract class BasePage {
         this.jsExecutor = (JavascriptExecutor) driver;
 
         this.waitUtils = new WaitUtils();
-        this.elementActions = new ElementActions();
-
+        this.elementActions = new ElementActions(driver, waitUtils);
+        this.mouseActions =new MouseActions(driver, waitUtils);
+        this.keyboardActions =new KeyboardActions(driver, waitUtils);
+        this.alertActions =new AlertActions(driver, waitUtils);
+        this.frameActions =new FrameActions(driver, waitUtils);
+        this.windowActions =new WindowActions(driver, waitUtils);
+        this.dropdownActions =new DropdownActions(driver, waitUtils);
         LOGGER.info("Page Object initialized : {}",
                 getClass().getSimpleName());
     }

@@ -1,5 +1,7 @@
 package com.ashutosh.ai.framework.page.actions;
 
+import java.util.Objects;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -19,28 +21,24 @@ import com.ashutosh.ai.framework.page.waits.WaitUtils;
  * @author Ashutosh Kumar Sahu
  * @version 1.0
  */
-public class ElementActions {
+public class ElementActions  {
 
     private static final Logger LOGGER = LogManager.getLogger(ElementActions.class);
-
     private final WebDriver driver;
     private final WaitUtils waitUtils;
+    
+    public ElementActions(final WebDriver driver,final WaitUtils waitUtils) {
 
-    /**
-     * Initializes ElementActions.
-     */
-    public ElementActions() {
-        this.driver = DriverManager.getDriver();
-        this.waitUtils = new WaitUtils();
+        this.driver = Objects.requireNonNull(driver);
+        this.waitUtils = Objects.requireNonNull(waitUtils);
     }
-
     /**
      * Clicks an element.
      *
      * @param locator element locator
      */
     public void click(By locator) {
-
+    	Objects.requireNonNull(locator,"Locator cannot be null.");
         LOGGER.info("Clicking element : {}", locator);
         waitUtils.waitForClickable(locator).click();
     }
