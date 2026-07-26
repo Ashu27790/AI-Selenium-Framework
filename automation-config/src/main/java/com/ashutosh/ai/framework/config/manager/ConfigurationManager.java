@@ -21,7 +21,7 @@ public final class ConfigurationManager {
 	private static ConfigurationManager instance;
 	private final Properties properties;
 	private ConfigurationManager() {
-		 properties = PropertyLoader.load("config.properties");
+		 properties = PropertyLoader.load("framework.properties");
 	}
 	/**
 	 * Returns the singleton instance of ConfigurationManager.

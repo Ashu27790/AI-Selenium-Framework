@@ -50,6 +50,7 @@
         <module>automation-driver</module>
         <module>automation-test</module>
         <module>automation-page</module>
+        <module>automation-report</module>
     </modules>
     <dependencyManagement>
 
