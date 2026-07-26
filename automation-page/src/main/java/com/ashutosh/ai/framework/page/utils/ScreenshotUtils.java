@@ -41,16 +41,13 @@ public class ScreenshotUtils {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
     private final String screenshotDirectory;
     private final WebDriver driver;
-    private final WaitUtils waitUtils;
     /**
      * Constructs ScreenshotUtils.
      *
      * @param driver WebDriver instance
-     * @param waitUtils Wait utility
      */
-    public ScreenshotUtils(final WebDriver driver,final WaitUtils waitUtils) {
+    public ScreenshotUtils(final WebDriver driver) {
         this.driver = Objects.requireNonNull(driver,"WebDriver cannot be null.");
-        this.waitUtils = Objects.requireNonNull( waitUtils,"WaitUtils cannot be null.");
         this.screenshotDirectory = Objects.requireNonNull( ConfigurationManager.getInstance().getProperty("screenshot.directory"),"Screenshot directory is not configured.");
         createScreenshotDirectory();
     }
@@ -61,11 +58,11 @@ public class ScreenshotUtils {
      *
      * @return screenshot path
      */
-    public String captureViewport(final String screenshotName) {
+    public String captureScreenshot(final String screenshotName) {
         validateScreenshotName(screenshotName);
         try {
             final Path destination =buildScreenshotPath(screenshotName);
-            Files.write(destination,getScreenshotDriver().getScreenshotAs(OutputType.BYTES));
+            Files.write(destination,getScreenshotExecutor().getScreenshotAs(OutputType.BYTES));
             LOGGER.info( "Viewport screenshot captured [{}].",destination);
             return destination.toString();
         } catch (IOException | WebDriverException exception) {
@@ -106,6 +103,7 @@ public class ScreenshotUtils {
      */
     public String captureElement(final By locator,final String screenshotName) {
         Objects.requireNonNull(locator,"Locator cannot be null.");
+        final WaitUtils waitUtils = new WaitUtils();
         return captureElement( waitUtils.waitForElementVisible(locator),screenshotName);
     }
 
@@ -116,7 +114,7 @@ public class ScreenshotUtils {
      */
     public String captureBase64() {
         LOGGER.debug("Capturing Base64 screenshot.");
-        return getScreenshotDriver().getScreenshotAs(OutputType.BASE64);
+        return getScreenshotExecutor().getScreenshotAs(OutputType.BASE64);
     }
     /**
      * Creates screenshot directory.
@@ -146,7 +144,7 @@ public class ScreenshotUtils {
      *
      * @return TakesScreenshot implementation
      */
-    private TakesScreenshot getScreenshotDriver() {
+    private TakesScreenshot getScreenshotExecutor() {
         return (TakesScreenshot) driver;
     }
     /**

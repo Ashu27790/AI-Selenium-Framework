@@ -47,6 +47,17 @@ public final class ConfigurationManager {
 	    return properties.getProperty(key);
 	}
 	/**
+	 * Returns the property value if present; otherwise returns the default value.
+	 *
+	 * @param key property key
+	 * @param defaultValue default value
+	 * @return property value or default value
+	 */
+	public String getProperty(final String key,final String defaultValue) {
+	    return properties.getProperty(key, defaultValue);
+
+	}
+	/**
 	 * Returns integer property.
 	 *
 	 * @param key Property key

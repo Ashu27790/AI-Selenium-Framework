@@ -25,7 +25,7 @@ public final class PropertyLoader {
             }
             properties.load(inputStream);
         } catch (IOException e) {
-            throw new ConfigurationException("Failed to load : " + fileName + " : " + e.getMessage());
+            throw new ConfigurationException("Failed to load : " + fileName + " : " + e);
         }
 
         return properties;
