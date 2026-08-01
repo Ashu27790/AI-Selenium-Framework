@@ -59,7 +59,7 @@ public final class DriverFactory {
             
             LOGGER.info("Local execution is enabled. Routing request to local driver managers.");
             return createLocalDriver(browserType);
-        } catch (Exception e) {
+        } catch (RuntimeException  e) {
             LOGGER.fatal("Critical failure occurred while initializing {} driver", browserType, e);
             throw new DriverException("Failed to initialize driver for: " + browserType, e);
         }

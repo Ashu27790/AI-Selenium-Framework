@@ -33,13 +33,16 @@ public final class ExtentReportManager {
     private static volatile ExtentReportManager instance;
     private final ExtentReports extentReports;
     private ExtentReportManager() {
+    	System.out.println("******** ExtentReportManager Constructor ********");
         extentReports = new ExtentReports();
         final String reportPath = createReportPath();
+        System.out.println("Extent Report Path = " + reportPath);
         final ExtentSparkReporter sparkReporter =new ExtentSparkReporter(reportPath);
         configureSparkReporter(sparkReporter);
         extentReports.attachReporter(sparkReporter);
         setSystemInformation();
         LOGGER.info("Extent Report initialized successfully.");
+        System.out.println("******** Extent Report Initialized ********");
     }
 
     /**

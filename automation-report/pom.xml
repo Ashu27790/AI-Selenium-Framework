@@ -50,6 +50,12 @@
             <artifactId>automation-page</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+    <groupId>com.ashutosh.automation</groupId>
+    <artifactId>automation-ai</artifactId>
+    <version>${project.version}</version>
+</dependency>
+        
 
         <!-- Extent Reports -->
         <dependency>

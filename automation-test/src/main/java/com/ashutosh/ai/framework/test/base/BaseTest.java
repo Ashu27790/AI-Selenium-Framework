@@ -13,7 +13,8 @@ import com.ashutosh.ai.framework.common.exceptions.*;
 import com.ashutosh.ai.framework.config.manager.ConfigurationManager;
 import com.ashutosh.ai.framework.driver.factory.DriverFactory;
 import com.ashutosh.ai.framework.driver.manager.DriverManager;
-
+import org.testng.annotations.Listeners;
+import com.ashutosh.ai.framework.test.listener.FrameworkTestListener;
 /**
  * BaseTest serves as the foundation for all TestNG test classes.
  *
@@ -33,6 +34,7 @@ import com.ashutosh.ai.framework.driver.manager.DriverManager;
  * @author Ashutosh Kumar Sahu
  * @version 1.0
  */
+@Listeners(FrameworkTestListener.class)
 public abstract class BaseTest {
 
     private static final Logger LOGGER = LogManager.getLogger(BaseTest.class);

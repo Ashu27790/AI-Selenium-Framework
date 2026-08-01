@@ -22,129 +22,215 @@ import com.ashutosh.ai.framework.config.manager.ConfigurationManager;
 import com.ashutosh.ai.framework.page.waits.WaitUtils;
 
 /**
- * Utility class for capturing browser and element screenshots.
+ * Enterprise Screenshot Utility.
  *
- * <p>
  * Supports:
  * <ul>
- * <li>Viewport screenshot</li>
- * <li>Element screenshot</li>
- * <li>Base64 screenshot</li>
+ *     <li>Viewport Screenshot</li>
+ *     <li>Element Screenshot</li>
+ *     <li>Base64 Screenshot</li>
+ *     <li>Extent Report Compatible Relative Paths</li>
  * </ul>
- * </p>
  *
  * @author Ashutosh Kumar Sahu
- * @version 1.0
+ * @version 2.0
  */
 public class ScreenshotUtils {
     private static final Logger LOGGER =LogManager.getLogger(ScreenshotUtils.class);
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-    private final String screenshotDirectory;
+    private static final String REPORT_RELATIVE_SCREENSHOT_PATH = "../screenshots/";
     private final WebDriver driver;
+    private final String screenshotDirectory;
     /**
-     * Constructs ScreenshotUtils.
+     * Constructor.
      *
-     * @param driver WebDriver instance
+     * @param driver WebDriver
      */
     public ScreenshotUtils(final WebDriver driver) {
-        this.driver = Objects.requireNonNull(driver,"WebDriver cannot be null.");
-        this.screenshotDirectory = Objects.requireNonNull( ConfigurationManager.getInstance().getProperty("screenshot.directory"),"Screenshot directory is not configured.");
+        this.driver = Objects.requireNonNull( driver, "WebDriver cannot be null.");
+        this.screenshotDirectory =Objects.requireNonNull( ConfigurationManager.getInstance() .getProperty("screenshot.directory"), "Screenshot directory is not configured.");
         createScreenshotDirectory();
     }
     /**
-     * Captures browser viewport screenshot.
+     * Captures browser screenshot.
+     *
+     * Returns relative path for Extent Report.
      *
      * @param screenshotName screenshot name
-     *
-     * @return screenshot path
+     * @return relative screenshot path
      */
     public String captureScreenshot(final String screenshotName) {
         validateScreenshotName(screenshotName);
         try {
-            final Path destination =buildScreenshotPath(screenshotName);
-            Files.write(destination,getScreenshotExecutor().getScreenshotAs(OutputType.BYTES));
-            LOGGER.info( "Viewport screenshot captured [{}].",destination);
-            return destination.toString();
+            Path destination = buildScreenshotPath(screenshotName);
+            Files.write(
+                    destination,
+                    getScreenshotExecutor()
+                            .getScreenshotAs(OutputType.BYTES));
+
+            LOGGER.info(
+                    "Screenshot saved successfully : {}",
+                    destination.toAbsolutePath());
+
+            String relativePath =
+                    REPORT_RELATIVE_SCREENSHOT_PATH
+                            + destination.getFileName();
+
+            LOGGER.info(
+                    "Returning Extent compatible path : {}",
+                    relativePath);
+
+            return relativePath;
+
         } catch (IOException | WebDriverException exception) {
-            LOGGER.error( "Unable to capture viewport screenshot.", exception);
-            throw new ScreenshotException( "Unable to capture viewport screenshot.", exception);
+
+            LOGGER.error(
+                    "Unable to capture screenshot.",
+                    exception);
+
+            throw new ScreenshotException(
+                    "Unable to capture screenshot.",
+                    exception);
         }
     }
 
     /**
-     * Captures screenshot of a WebElement.
+     * Captures WebElement screenshot.
      *
-     * @param element target element
+     * @param element WebElement
      * @param screenshotName screenshot name
-     *
-     * @return screenshot path
+     * @return relative screenshot path
      */
-    public String captureElement(final WebElement element,final String screenshotName) {
-        Objects.requireNonNull(element, "Element cannot be null.");
+    public String captureElement(
+            final WebElement element,
+            final String screenshotName) {
+
+        Objects.requireNonNull(
+                element,
+                "Element cannot be null.");
+
         validateScreenshotName(screenshotName);
+
         try {
-            final Path destination = buildScreenshotPath(screenshotName);
-            Files.write(destination, element.getScreenshotAs(OutputType.BYTES));
-            LOGGER.info( "Element screenshot captured [{}].", destination);
-            return destination.toString();
+
+            Path destination =
+                    buildScreenshotPath(screenshotName);
+
+            Files.write(
+                    destination,
+                    element.getScreenshotAs(OutputType.BYTES));
+
+            LOGGER.info(
+                    "Element screenshot saved : {}",
+                    destination.toAbsolutePath());
+
+            return REPORT_RELATIVE_SCREENSHOT_PATH
+                    + destination.getFileName();
 
         } catch (IOException | WebDriverException exception) {
-            LOGGER.error("Unable to capture element screenshot.",exception);
-            throw new ScreenshotException("Unable to capture element screenshot.",exception);
+
+            LOGGER.error(
+                    "Unable to capture element screenshot.",
+                    exception);
+
+            throw new ScreenshotException(
+                    "Unable to capture element screenshot.",
+                    exception);
         }
-    }
-    /**
-     * Captures screenshot using locator.
-     *
-     * @param locator element locator
-     * @param screenshotName screenshot name
-     *
-     * @return screenshot path
-     */
-    public String captureElement(final By locator,final String screenshotName) {
-        Objects.requireNonNull(locator,"Locator cannot be null.");
-        final WaitUtils waitUtils = new WaitUtils();
-        return captureElement( waitUtils.waitForElementVisible(locator),screenshotName);
     }
 
     /**
-     * Captures Base64 screenshot.
+     * Captures element screenshot using locator.
      *
-     * @return Base64 screenshot
+     * @param locator locator
+     * @param screenshotName screenshot name
+     * @return screenshot path
+     */
+    public String captureElement(
+            final By locator,
+            final String screenshotName) {
+
+        Objects.requireNonNull(
+                locator,
+                "Locator cannot be null.");
+
+        WaitUtils wait =
+                new WaitUtils();
+
+        return captureElement(
+                wait.waitForElementVisible(locator),
+                screenshotName);
+    }
+
+    /**
+     * Returns Base64 screenshot.
+     *
+     * Ideal for Jenkins / GitHub Actions / CI Reports.
+     *
+     * @return Base64 image
      */
     public String captureBase64() {
+
         LOGGER.debug("Capturing Base64 screenshot.");
-        return getScreenshotExecutor().getScreenshotAs(OutputType.BASE64);
+
+        return getScreenshotExecutor()
+                .getScreenshotAs(OutputType.BASE64);
     }
+
     /**
      * Creates screenshot directory.
      */
     private void createScreenshotDirectory() {
+
         try {
-            Files.createDirectories(Paths.get(screenshotDirectory));
-            LOGGER.debug( "Screenshot directory initialized [{}].",screenshotDirectory);
+
+            Files.createDirectories(
+                    Paths.get(screenshotDirectory));
+
+            LOGGER.info(
+                    "Screenshot directory ready : {}",
+                    screenshotDirectory);
+
         } catch (IOException exception) {
-            LOGGER.error( "Unable to create screenshot directory.", exception);
-            throw new ScreenshotException( "Unable to create screenshot directory.",exception);
+
+            LOGGER.error(
+                    "Unable to create screenshot directory.",
+                    exception);
+
+            throw new ScreenshotException(
+                    "Unable to create screenshot directory.",
+                    exception);
         }
     }
+
     /**
-     * Builds screenshot path.
+     * Builds screenshot destination.
      *
      * @param screenshotName screenshot name
-     *
-     * @return screenshot path
+     * @return destination path
      */
-    private Path buildScreenshotPath(final String screenshotName) {
-        final String timestamp = LocalDateTime.now().format(FORMATTER);
-        return Paths.get( screenshotDirectory, screenshotName + "_" + timestamp + ".png");
+    private Path buildScreenshotPath(
+            final String screenshotName) {
+
+        String timestamp =
+                LocalDateTime.now()
+                        .format(FORMATTER);
+
+        return Paths.get(
+                screenshotDirectory,
+                screenshotName
+                        + "_"
+                        + timestamp
+                        + ".png");
     }
+
     /**
-     * Returns screenshot driver.
+     * Returns screenshot executor.
      *
-     * @return TakesScreenshot implementation
+     * @return TakesScreenshot
      */
     private TakesScreenshot getScreenshotExecutor() {
+
         return (TakesScreenshot) driver;
     }
     /**
@@ -152,11 +238,17 @@ public class ScreenshotUtils {
      *
      * @param screenshotName screenshot name
      */
-    private void validateScreenshotName(final String screenshotName) {
-        Objects.requireNonNull(screenshotName,"Screenshot name cannot be null.");
+    private void validateScreenshotName(
+            final String screenshotName) {
+
+        Objects.requireNonNull(
+                screenshotName,
+                "Screenshot name cannot be null.");
+
         if (screenshotName.isBlank()) {
-            throw new IllegalArgumentException("Screenshot name cannot be blank.");
+
+            throw new IllegalArgumentException(
+                    "Screenshot name cannot be blank.");
         }
     }
-
 }

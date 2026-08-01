@@ -18,7 +18,7 @@ import com.ashutosh.ai.framework.config.loader.PropertyLoader;
  * Author: Ashutosh Kumar Sahu
  */
 public final class ConfigurationManager {
-	private static ConfigurationManager instance;
+	private static final ConfigurationManager INSTANCE = new ConfigurationManager();
 	private final Properties properties;
 	private ConfigurationManager() {
 		 properties = PropertyLoader.load("framework.properties");
@@ -26,15 +26,10 @@ public final class ConfigurationManager {
 	/**
 	 * Returns the singleton instance of ConfigurationManager.
 	 *
-	 * If the instance has not yet been created, it creates one.
-	 *
 	 * @return ConfigurationManager singleton instance
 	 */
 	public static ConfigurationManager getInstance() {
-		if (instance == null) {
-			instance = new ConfigurationManager();
-		}
-		return instance;
+	    return INSTANCE;
 	}
 	
 	/**
@@ -74,5 +69,49 @@ public final class ConfigurationManager {
 	 */
 	public boolean getBooleanProperty(String key) {
 	    return Boolean.parseBoolean(properties.getProperty(key));
+	}
+	/**
+	 * Returns boolean property.
+	 *
+	 * @param key Property key
+	 * @param defaultValue Default value
+	 * @return Boolean value
+	 */
+	public boolean getBooleanProperty(final String key, final boolean defaultValue) {
+	    return Boolean.parseBoolean(
+	            properties.getProperty(key, String.valueOf(defaultValue)));
+	}
+	/**
+	 * Returns integer property.
+	 *
+	 * @param key Property key
+	 * @param defaultValue Default value
+	 * @return Integer value
+	 */
+	public int getIntProperty(final String key, final int defaultValue) {
+	    return Integer.parseInt(
+	            properties.getProperty(key, String.valueOf(defaultValue)));
+	}
+	/**
+	 * Returns double property.
+	 *
+	 * @param key Property key
+	 * @return Double value
+	 */
+	public double getDoubleProperty(final String key) {
+	    return Double.parseDouble(properties.getProperty(key));
+	}
+	/**
+	 * Returns double property.
+	 *
+	 * @param key Property key
+	 * @param defaultValue Default value
+	 * @return Double value
+	 */
+	public double getDoubleProperty(final String key,
+	                                final double defaultValue) {
+
+	    return Double.parseDouble(
+	            properties.getProperty(key, String.valueOf(defaultValue)));
 	}
 }

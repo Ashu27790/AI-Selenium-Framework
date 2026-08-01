@@ -14,12 +14,17 @@ package com.ashutosh.ai.framework.driver.exceptions;
  */
 public class DriverException extends RuntimeException {
 
-    public DriverException(String message) {
-        super(message);
-    }
+	 public DriverException(final String message) {
+	        super(message);
+	    }
 
-    public DriverException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	    public DriverException(final Throwable cause) {
+	        super(cause);
+	    }
+
+	    public DriverException(final String message,
+	                           final Throwable cause) {
+	        super(message, cause);
+	    }
 
 }

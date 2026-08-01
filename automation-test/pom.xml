@@ -28,7 +28,21 @@
             <artifactId>automation-driver</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+	<dependency>
+    <groupId>com.ashutosh.automation</groupId>
+    <artifactId>automation-ai</artifactId>
+    <version>${project.version}</version>
+</dependency> 
+<dependency>
+    <groupId>com.ashutosh.automation</groupId>
+    <artifactId>automation-page</artifactId>
+    <version>${project.version}</version>
+</dependency>
+<dependency>
+    <groupId>com.ashutosh.automation</groupId>
+    <artifactId>automation-report</artifactId>
+    <version>${project.version}</version>
+</dependency>    
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
